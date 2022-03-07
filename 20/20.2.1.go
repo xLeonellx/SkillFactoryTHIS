@@ -191,7 +191,7 @@ func main() {
 	fmt.Println("Добро пожаловать в программу!")
 	fmt.Println("Пожалуйста введите интервал очистки! (в секундах)")
 	fmt.Scan(&bufferClearInterval)
-	fmt.Println("Пожалуйста введите ваши данные!!!")
+	fmt.Println("Пожалуйста введите ваши данные!")
 	source, done := dataSource()
 	pipeline := NewPipelineInt(done, negativeFilterConvInt, specialFilterConvInt, bufferConvInt)
 	consumer(done, pipeline.Run(source))
