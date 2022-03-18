@@ -40,13 +40,13 @@ func demultiplexingFunc(dataSourceChan chan int, amount int) ([]chan int, <-chan
 		// канал-источник
 		// данных
 		// закрываем все каналы-потребители
-					close(done)
+		close(done)
 	}()
 	return output, done
 }
 
 // Функция уплотнения каналов
-func multiplexingFunc(done <- chan int, channels ...chan int) <-chan int {
+func multiplexingFunc(done <-chan int, channels ...chan int) <-chan int {
 	var wg sync.WaitGroup
 	// Общий канал, в который будут попадать сообщения от всех
 	// источников
@@ -56,13 +56,13 @@ func multiplexingFunc(done <- chan int, channels ...chan int) <-chan int {
 	multiplex := func(c <-chan int) {
 		defer wg.Done()
 		select {
-			// Если поступило сообщение из одного из
-			// каналов-источников,
-			// перенаправляем его в общий канал
-			case i:= <-c:
+		// Если поступило сообщение из одного из
+		// каналов-источников,
+		// перенаправляем его в общий канал
+		case i := <-c:
 			multiplexedChan <- i
-			case <-done:
-				return
+		case <-done:
+			return
 		}
 	}
 	wg.Add(len(channels))
@@ -104,6 +104,8 @@ func main() {
 	c := multiplexingFunc(done, consumers...)
 	// Централизованно получаем сообщения от всех нужных нам
 	// источников
+	// данных
+	// данных
 	// данных
 	for data := range c {
 		fmt.Println(data)
